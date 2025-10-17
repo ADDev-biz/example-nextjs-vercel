@@ -9,11 +9,41 @@ function ContactPageContent() {
     email: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupTimestamp, setPopupTimestamp] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Form submitted! (This is just a demo)");
-    setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setPopupMessage(result.message);
+        setPopupTimestamp(result.receivedAt);
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setPopupMessage(result.error || 'An error occurred');
+        setPopupTimestamp(new Date().toLocaleString());
+      }
+    } catch (error) {
+      setPopupMessage('Failed to send message. Please try again.');
+      setPopupTimestamp(new Date().toLocaleString());
+    } finally {
+      setIsSubmitting(false);
+      setShowPopup(true);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -167,14 +197,63 @@ function ContactPageContent() {
                 ></textarea>
               </div>
               <div className="form-control mt-6">
-                <button type="submit" className="btn btn-primary">
-                  Send Message
+                <button 
+                  type="submit" 
+                  className="btn btn-primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="loading loading-spinner loading-sm"></span>
+                      Sending...
+                    </>
+                  ) : (
+                    'Send Message'
+                  )}
                 </button>
               </div>
             </form>
           </div>
         </div>
       </div>
+
+      {/* Popup Modal */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl">
+            <div className="text-center">
+              <div className="mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-16 w-16 text-green-500 mx-auto"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                {popupMessage}
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Received at: {popupTimestamp}
+              </p>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="btn btn-primary"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
