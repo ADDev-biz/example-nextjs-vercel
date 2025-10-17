@@ -10,6 +10,7 @@ export default function Home() {
           alt="Next.js logo"
           width={180}
           height={38}
+          sizes="180px"
           priority
         />
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
@@ -24,6 +25,16 @@ export default function Home() {
             Save and see your changes instantly.
           </li>
         </ol>
+
+        {/* DaisyUI Test Components */}
+        <div className="flex flex-col gap-4 items-center">
+          <div className="alert alert-info">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>DaisyUI is working! 🎉</span>
+          </div>
+          <button className="btn btn-primary">Primary Button</button>
+          <button className="btn btn-secondary">Secondary Button</button>
+        </div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
