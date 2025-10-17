@@ -1,11 +1,21 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "retro" : "light";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+  };
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
-          className="dark:invert"
+          className={`${theme === 'retro' ? '[filter:invert(1)]' : '[filter:invert(0)]'}`}
           src="/next.svg"
           alt="Next.js logo"
           width={180}
@@ -16,7 +26,7 @@ export default function Home() {
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
+            <code className="bg-base-200 text-base-content font-mono font-semibold px-1 py-0.5 rounded">
               app/page.tsx
             </code>
             .
@@ -26,6 +36,19 @@ export default function Home() {
           </li>
         </ol>
 
+        {/* Theme Switcher */}
+        <div className="flex flex-col gap-4 items-center">
+          <div className="text-sm text-base-content opacity-70">
+            Current theme: <span className="font-bold">{theme}</span>
+          </div>
+          <button 
+            onClick={toggleTheme}
+            className="btn btn-outline"
+          >
+            Switch to {theme === "light" ? "Retro" : "Light"} Theme
+          </button>
+        </div>
+
         {/* DaisyUI Test Components */}
         <div className="flex flex-col gap-4 items-center">
           <div className="alert alert-info">
@@ -34,17 +57,26 @@ export default function Home() {
           </div>
           <button className="btn btn-primary">Primary Button</button>
           <button className="btn btn-secondary">Secondary Button</button>
+          <div className="card w-96 bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title">Card title!</h2>
+              <p>If a dog chews shoes whose shoes does he choose?</p>
+              <div className="card-actions justify-end">
+                <button className="btn btn-primary">Buy Now</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
+            className="btn btn-primary rounded-full gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Image
-              className="dark:invert"
+              className={`${theme === 'retro' ? '[filter:invert(1)]' : '[filter:invert(0)]'}`}
               src="/vercel.svg"
               alt="Vercel logomark"
               width={20}
@@ -53,7 +85,7 @@ export default function Home() {
             Deploy now
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
+            className="btn btn-outline rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
             target="_blank"
             rel="noopener noreferrer"
