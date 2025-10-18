@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
+    "@vercel/speed-insights": "^1.2.0",
     "crypto": "^1.0.1",
     "daisyui": "^5.3.7",
     "next": "15.5.5",
