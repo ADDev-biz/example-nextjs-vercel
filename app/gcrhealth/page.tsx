@@ -7,11 +7,13 @@ function GcrHealthPageContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [healthStatus, setHealthStatus] = useState<'healthy' | 'unhealthy' | null>(null);
 
   const handleTestHealth = async () => {
     setIsLoading(true);
     setError("");
     setResponse("");
+    setHealthStatus(null);
 
     try {
       const res = await fetch('/api/gcr-health', {
@@ -25,15 +27,28 @@ function GcrHealthPageContent() {
 
       if (res.ok) {
         setResponse(JSON.stringify(data, null, 2));
+        
+        // Determine health status based on response
+        // Check for common health status indicators
+        const isHealthy = data.status === 'healthy' || 
+                         data.health === 'healthy' || 
+                         data.status === 'ok' || 
+                         data.health === 'ok' ||
+                         (data.status === 'up' || data.health === 'up') ||
+                         (typeof data === 'object' && Object.keys(data).length > 0 && !data.error);
+        
+        setHealthStatus(isHealthy ? 'healthy' : 'unhealthy');
       } else {
         setError(data.error || 'An error occurred while testing health');
         if (data.details) {
           setError(prev => prev + ` (${data.details})`);
         }
+        setHealthStatus('unhealthy');
       }
     } catch (err) {
       setError('Failed to connect to the server. Please try again.');
       console.error('Health check error:', err);
+      setHealthStatus('unhealthy');
     } finally {
       setIsLoading(false);
     }
@@ -69,6 +84,20 @@ function GcrHealthPageContent() {
                 'Test Health'
               )}
             </button>
+            
+            {/* Health Status Indicator */}
+            {healthStatus && (
+              <div className="mt-4 flex justify-center">
+                <div
+                  className={`w-4 h-4 rounded-full ${
+                    healthStatus === 'healthy' 
+                      ? 'bg-green-500' 
+                      : 'bg-red-500'
+                  }`}
+                  title={healthStatus === 'healthy' ? 'System is healthy' : 'System is unhealthy'}
+                ></div>
+              </div>
+            )}
           </div>
 
           {/* Error Display */}
@@ -91,20 +120,6 @@ function GcrHealthPageContent() {
             </div>
           )}
 
-          {/* Response Display */}
-          {response && (
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Health Response</span>
-              </label>
-              <textarea
-                className="textarea textarea-bordered h-96 font-mono text-sm"
-                value={response}
-                readOnly
-                placeholder="Health response will appear here..."
-              />
-            </div>
-          )}
 
           {/* Instructions */}
           <div className="mt-6 p-4 bg-base-200 rounded-lg">
