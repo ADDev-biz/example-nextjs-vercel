@@ -1,0 +1,32 @@
+{
+  "segments": {
+    "project": {
+      "enabled": true
+    },
+    "branch": {
+      "enabled": true
+    },
+    "session": {
+      "enabled": true,
+      "type": "both",
+      "warningThreshold": 80
+    },
+    "block": {
+      "enabled": true,
+      "type": "cost",
+      "burnType": "cost"
+    },
+    "today": {
+      "enabled": true,
+      "type": "both",
+      "amount": 5.0,
+      "warningThreshold": 80
+    },
+    "datetime": {
+      "enabled": true
+    }
+  },
+  "separator": {
+    "style": "powerline"
+  }
+}

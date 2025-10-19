@@ -1,22 +1,44 @@
+"use client";
+
 import { ReactNode } from "react";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import Link from "next/link";
 
 interface DashboardLayoutProps {
   children: ReactNode;
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  const { user, isAuthenticated } = useKindeBrowserClient();
+
   return (
     <div className="min-h-screen bg-base-200">
       {/* Dashboard-specific header */}
       <header className="bg-primary text-primary-content shadow-lg">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Dashboard</h1>
             <div className="flex items-center gap-4">
+              <Link href="/" className="btn btn-ghost btn-sm text-primary-content">
+                ← Home
+              </Link>
+              <h1 className="text-2xl font-bold">Dashboard</h1>
+            </div>
+            <div className="flex items-center gap-4">
+              {isAuthenticated && user && (
+                <div className="flex items-center gap-2">
+                  <div className="avatar placeholder">
+                    <div className="bg-secondary text-secondary-content rounded-full w-8">
+                      <span className="text-xs">{user.given_name?.[0] || user.email?.[0] || 'U'}</span>
+                    </div>
+                  </div>
+                  <span className="hidden sm:inline">{user.given_name || user.email}</span>
+                </div>
+              )}
               <span className="badge badge-secondary">Admin</span>
-              <button className="btn btn-ghost btn-sm text-primary-content">
-                Profile
-              </button>
+              <LogoutLink className="btn btn-ghost btn-sm text-primary-content">
+                Log out
+              </LogoutLink>
             </div>
           </div>
         </div>

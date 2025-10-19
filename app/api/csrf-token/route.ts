@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { generateCSRFToken } from '@/lib/csrf';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function GET(request: NextRequest) {
   try {
     // Check authentication
-    const session = await getServerSession(authOptions);
-    
-    if (!session) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Generate CSRF token
-    const csrfToken = generateCSRFToken(session.user.id);
+    const csrfToken = generateCSRFToken(user.id);
 
     return NextResponse.json({
       csrfToken

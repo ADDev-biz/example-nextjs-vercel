@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { validateCSRFToken } from '@/lib/csrf';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const session = await getServerSession(authOptions);
-    
-    if (!session) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     const { name, email, message, csrfToken } = body;
 
     // Validate CSRF token
-    if (!csrfToken || !validateCSRFToken(session.user.id, csrfToken)) {
+    if (!csrfToken || !validateCSRFToken(user.id, csrfToken)) {
       return NextResponse.json(
         { error: 'Invalid CSRF token' },
         { status: 403 }
@@ -59,8 +59,8 @@ export async function POST(request: NextRequest) {
       email,
       message,
       receivedAt: formattedDate,
-      userId: session.user.id,
-      userEmail: session.user.email
+      userId: user.id,
+      userEmail: user.email
     });
 
     // Return success response with timestamp
