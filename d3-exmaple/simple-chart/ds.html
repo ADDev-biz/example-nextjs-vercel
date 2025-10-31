@@ -44,6 +44,16 @@
             font-weight: bold;
             text-anchor: middle;
         }
+
+        /* Ensure chart containers have proper sizing */
+        #chart, #chart2 {
+            min-height: 300px;
+            width: 100%;
+        }
+
+        #chart svg, #chart2 svg {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-base-200 min-h-screen p-4 pb-12">
@@ -70,6 +80,63 @@
             </div>
         </div>
 
+        <!-- Unified Time Period Control -->
+        <div class="card bg-gradient-to-r from-primary/10 to-secondary/10 shadow-xl mb-6">
+            <div class="card-body p-4 sm:p-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-primary/20 p-3 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold">Time Period</h2>
+                            <p class="text-xs text-base-content/70">Select range for all charts</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Desktop: Button Group -->
+                    <div class="hidden md:flex flex-wrap gap-2">
+                        <button class="btn btn-sm btn-primary global-time-btn" data-days="30">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            30 Days
+                        </button>
+                        <button class="btn btn-sm btn-outline btn-primary global-time-btn" data-days="60">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            60 Days
+                        </button>
+                        <button class="btn btn-sm btn-outline btn-primary global-time-btn" data-days="120">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            120 Days
+                        </button>
+                        <button class="btn btn-sm btn-outline btn-primary global-time-btn" data-days="365">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            1 Year
+                        </button>
+                    </div>
+                    
+                    <!-- Mobile/Tablet: Radio Buttons -->
+                    <div class="flex md:hidden flex-col gap-2 w-full">
+                        <div class="join join-vertical w-full">
+                            <input class="join-item btn btn-sm" type="radio" name="global-time-period" value="30" aria-label="30 Days" checked />
+                            <input class="join-item btn btn-sm" type="radio" name="global-time-period" value="60" aria-label="60 Days" />
+                            <input class="join-item btn btn-sm" type="radio" name="global-time-period" value="120" aria-label="120 Days" />
+                            <input class="join-item btn btn-sm" type="radio" name="global-time-period" value="365" aria-label="1 Year" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Collapsible Chart Component 1 -->
         <div class="collapse collapse-arrow bg-base-100 shadow-xl mb-6">
             <input type="checkbox" checked="checked" /> 
@@ -81,47 +148,7 @@
                     Primary Time Series Chart
                 </div>
             </div>
-            <div class="collapse-content bg-base-100">
-                <!-- Time Period Controls -->
-                <div class="card bg-base-200 mb-6 mt-4">
-                    <div class="card-body p-4">
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                            <h2 class="card-title text-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                Select Time Period
-                            </h2>
-                            
-                            <!-- Desktop: Button Group -->
-                            <div class="hidden md:flex flex-wrap gap-2">
-                                <button class="btn btn-sm btn-primary time-period-btn" data-days="30" data-chart="1">
-                                    30 Days
-                                </button>
-                                <button class="btn btn-sm btn-outline btn-primary time-period-btn" data-days="60" data-chart="1">
-                                    60 Days
-                                </button>
-                                <button class="btn btn-sm btn-outline btn-primary time-period-btn" data-days="120" data-chart="1">
-                                    120 Days
-                                </button>
-                                <button class="btn btn-sm btn-outline btn-primary time-period-btn" data-days="365" data-chart="1">
-                                    1 Year
-                                </button>
-                            </div>
-                            
-                            <!-- Mobile/Tablet: Radio Buttons -->
-                            <div class="flex md:hidden flex-col gap-2 w-full">
-                                <div class="join join-vertical w-full">
-                                    <input class="join-item btn btn-sm" type="radio" name="time-period-1" value="30" aria-label="30 Days" checked />
-                                    <input class="join-item btn btn-sm" type="radio" name="time-period-1" value="60" aria-label="60 Days" />
-                                    <input class="join-item btn btn-sm" type="radio" name="time-period-1" value="120" aria-label="120 Days" />
-                                    <input class="join-item btn btn-sm" type="radio" name="time-period-1" value="365" aria-label="1 Year" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="collapse-content bg-base-100 pt-4">
                 <!-- Chart Container -->
                 <div class="card bg-base-100 shadow-md mb-6">
                     <div class="card-body p-2 sm:p-4">
@@ -154,47 +181,7 @@
                     Secondary Metrics Chart
                 </div>
             </div>
-            <div class="collapse-content bg-base-100">
-                <!-- Time Period Controls -->
-                <div class="card bg-base-200 mb-6 mt-4">
-                    <div class="card-body p-4">
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                            <h2 class="card-title text-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                Select Time Period
-                            </h2>
-                            
-                            <!-- Desktop: Button Group -->
-                            <div class="hidden md:flex flex-wrap gap-2">
-                                <button class="btn btn-sm btn-secondary time-period-btn-2" data-days="30" data-chart="2">
-                                    30 Days
-                                </button>
-                                <button class="btn btn-sm btn-outline btn-secondary time-period-btn-2" data-days="60" data-chart="2">
-                                    60 Days
-                                </button>
-                                <button class="btn btn-sm btn-outline btn-secondary time-period-btn-2" data-days="120" data-chart="2">
-                                    120 Days
-                                </button>
-                                <button class="btn btn-sm btn-outline btn-secondary time-period-btn-2" data-days="365" data-chart="2">
-                                    1 Year
-                                </button>
-                            </div>
-                            
-                            <!-- Mobile/Tablet: Radio Buttons -->
-                            <div class="flex md:hidden flex-col gap-2 w-full">
-                                <div class="join join-vertical w-full">
-                                    <input class="join-item btn btn-sm" type="radio" name="time-period-2" value="30" aria-label="30 Days" checked />
-                                    <input class="join-item btn btn-sm" type="radio" name="time-period-2" value="60" aria-label="60 Days" />
-                                    <input class="join-item btn btn-sm" type="radio" name="time-period-2" value="120" aria-label="120 Days" />
-                                    <input class="join-item btn btn-sm" type="radio" name="time-period-2" value="365" aria-label="1 Year" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="collapse-content bg-base-100 pt-4">
                 <!-- Chart Container -->
                 <div class="card bg-base-100 shadow-md mb-6">
                     <div class="card-body p-2 sm:p-4">

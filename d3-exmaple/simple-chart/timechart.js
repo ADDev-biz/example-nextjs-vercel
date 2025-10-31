@@ -313,10 +313,10 @@ function updateStats(data, days) {
     }
 }
 
-// Button click handlers for desktop
-d3.selectAll(".time-period-btn").on("click", function() {
+// Global button click handlers for desktop - updates BOTH charts
+d3.selectAll(".global-time-btn").on("click", function() {
     // Update active button - remove outline and add solid primary
-    d3.selectAll(".time-period-btn")
+    d3.selectAll(".global-time-btn")
         .classed("btn-outline", true)
         .classed("btn-primary", true);
     
@@ -325,19 +325,52 @@ d3.selectAll(".time-period-btn").on("click", function() {
         .classed("btn-outline", false)
         .classed("btn-primary", true);
     
-    // Update chart
+    // Update BOTH charts
     const days = +d3.select(this).attr("data-days");
     updateChart(days);
+    updateChart2(days);
 });
 
-// Radio button handlers for mobile
-d3.selectAll('input[name="time-period-1"]').on("change", function() {
+// Global radio button handlers for mobile - updates BOTH charts
+d3.selectAll('input[name="global-time-period"]').on("change", function() {
     const days = +this.value;
     updateChart(days);
+    updateChart2(days);
 });
 
-// Initial render
-updateChart(30);
+// Handle collapsible state changes
+function setupCollapseHandlers() {
+    // Get collapse checkboxes
+    const collapseCheckboxes = document.querySelectorAll('.collapse input[type="checkbox"]');
+    
+    collapseCheckboxes.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Collapse just opened, wait a bit for animation then update charts
+                setTimeout(() => {
+                    const activeDays = +d3.select(".global-time-btn:not(.btn-outline)").attr("data-days") || 
+                                      +document.querySelector('input[name="global-time-period"]:checked')?.value || 30;
+                    
+                    // Update the corresponding chart
+                    if (index === 0) {
+                        updateChart(activeDays, true);
+                    } else if (index === 1) {
+                        updateChart2(activeDays, true);
+                    }
+                }, 350); // Wait for DaisyUI collapse animation
+            }
+        });
+    });
+}
+
+// Initial render for both charts (with a delay to ensure containers are ready)
+setTimeout(() => {
+    updateChart(30);
+    updateChart2(30);
+}, 100);
+
+// Setup collapse handlers
+setupCollapseHandlers();
 
 // Optional: Auto-refresh data
 function refreshData() {
@@ -347,9 +380,16 @@ function refreshData() {
     dataStore[120] = generateData(120);
     dataStore[365] = generateData(365);
     
-    // Update current view - find the button without btn-outline class
-    const activeDays = +d3.select(".time-period-btn:not(.btn-outline)").attr("data-days");
+    dataStore2[30] = generateData2(30);
+    dataStore2[60] = generateData2(60);
+    dataStore2[120] = generateData2(120);
+    dataStore2[365] = generateData2(365);
+    
+    // Update both charts with current global time period
+    const activeDays = +d3.select(".global-time-btn:not(.btn-outline)").attr("data-days") || 
+                      +document.querySelector('input[name="global-time-period"]:checked')?.value || 30;
     updateChart(activeDays);
+    updateChart2(activeDays);
 }
 
 // Uncomment to enable auto-refresh every 10 seconds
@@ -360,15 +400,12 @@ let resizeTimeout;
 window.addEventListener('resize', function() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(function() {
-        // Find current active period for chart 1
-        const activeDays = +d3.select(".time-period-btn:not(.btn-outline)").attr("data-days") || 
-                          +document.querySelector('input[name="time-period-1"]:checked')?.value || 30;
+        // Find current active period from global control
+        const activeDays = +d3.select(".global-time-btn:not(.btn-outline)").attr("data-days") || 
+                          +document.querySelector('input[name="global-time-period"]:checked')?.value || 30;
+        // Update both charts with the same time period
         updateChart(activeDays, true); // Skip transition on resize
-        
-        // Find current active period for chart 2
-        const activeDays2 = +d3.select(".time-period-btn-2:not(.btn-outline)").attr("data-days") || 
-                           +document.querySelector('input[name="time-period-2"]:checked')?.value || 30;
-        updateChart2(activeDays2, true); // Skip transition on resize
+        updateChart2(activeDays, true); // Skip transition on resize
     }, 250);
 });
 
@@ -693,25 +730,5 @@ function updateStats2(data, days) {
     }
 }
 
-// Button click handlers for chart 2 desktop
-d3.selectAll(".time-period-btn-2").on("click", function() {
-    d3.selectAll(".time-period-btn-2")
-        .classed("btn-outline", true)
-        .classed("btn-secondary", true);
-    
-    d3.select(this)
-        .classed("btn-outline", false)
-        .classed("btn-secondary", true);
-    
-    const days = +d3.select(this).attr("data-days");
-    updateChart2(days);
-});
-
-// Radio button handlers for chart 2 mobile
-d3.selectAll('input[name="time-period-2"]').on("change", function() {
-    const days = +this.value;
-    updateChart2(days);
-});
-
-// Initial render for chart 2
-updateChart2(30);
+// Initial render for chart 2 is handled by the main initialization with delay
+// This ensures both charts are rendered after the DOM is fully ready

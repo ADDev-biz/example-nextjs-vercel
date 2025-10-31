@@ -1,0 +1,332 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Sample JSON data structure for D3 time series charts",
+    "lastUpdated": "2024-10-31T12:00:00Z"
+  },
+  "charts": {
+    "primaryChart": {
+      "id": "chart1",
+      "title": "Primary Time Series Chart",
+      "type": "line-area",
+      "color": "steelblue",
+      "description": "Main metrics showing upward trend with seasonal variation",
+      "timePeriods": {
+        "30": {
+          "days": 30,
+          "label": "30 Days",
+          "data": [
+            {
+              "date": "2024-10-01T00:00:00Z",
+              "value": 93.59
+            },
+            {
+              "date": "2024-10-02T00:00:00Z",
+              "value": 98.23
+            },
+            {
+              "date": "2024-10-03T00:00:00Z",
+              "value": 102.45
+            },
+            {
+              "date": "2024-10-04T00:00:00Z",
+              "value": 107.89
+            },
+            {
+              "date": "2024-10-05T00:00:00Z",
+              "value": 111.34
+            }
+          ],
+          "statistics": {
+            "mean": 119.34,
+            "min": 93.18,
+            "max": 139.09,
+            "latest": 104.86,
+            "change": 11.27,
+            "changePercent": 12.0
+          }
+        },
+        "60": {
+          "days": 60,
+          "label": "60 Days",
+          "data": [
+            {
+              "date": "2024-09-01T00:00:00Z",
+              "value": 108.39
+            },
+            {
+              "date": "2024-09-02T00:00:00Z",
+              "value": 112.56
+            }
+          ],
+          "statistics": {
+            "mean": 114.53,
+            "min": 91.37,
+            "max": 142.31,
+            "latest": 110.59,
+            "change": 2.20,
+            "changePercent": 2.0
+          }
+        },
+        "120": {
+          "days": 120,
+          "label": "120 Days",
+          "data": [],
+          "statistics": {
+            "mean": 125.67,
+            "min": 85.23,
+            "max": 165.89,
+            "latest": 128.45,
+            "change": 43.22,
+            "changePercent": 50.7
+          }
+        },
+        "365": {
+          "days": 365,
+          "label": "Full Year",
+          "data": [],
+          "statistics": {
+            "mean": 191.36,
+            "min": 93.45,
+            "max": 300.15,
+            "latest": 264.48,
+            "change": 149.55,
+            "changePercent": 130.1
+          }
+        }
+      },
+      "config": {
+        "showArea": true,
+        "showLine": true,
+        "showDots": true,
+        "showGrid": true,
+        "curve": "monotoneX",
+        "animate": true,
+        "animationDuration": 750
+      }
+    },
+    "secondaryChart": {
+      "id": "chart2",
+      "title": "Secondary Metrics Chart",
+      "type": "line-area",
+      "color": "orange",
+      "description": "Alternative metrics showing downward trend with higher volatility",
+      "timePeriods": {
+        "30": {
+          "days": 30,
+          "label": "30 Days",
+          "data": [
+            {
+              "date": "2024-10-01T00:00:00Z",
+              "value": 158.56
+            },
+            {
+              "date": "2024-10-02T00:00:00Z",
+              "value": 152.34
+            },
+            {
+              "date": "2024-10-03T00:00:00Z",
+              "value": 147.89
+            },
+            {
+              "date": "2024-10-04T00:00:00Z",
+              "value": 141.23
+            },
+            {
+              "date": "2024-10-05T00:00:00Z",
+              "value": 135.67
+            }
+          ],
+          "statistics": {
+            "mean": 144.30,
+            "min": 111.94,
+            "max": 192.90,
+            "latest": 133.64,
+            "change": -24.92,
+            "changePercent": -15.7
+          }
+        },
+        "60": {
+          "days": 60,
+          "label": "60 Days",
+          "data": [
+            {
+              "date": "2024-09-01T00:00:00Z",
+              "value": 165.78
+            },
+            {
+              "date": "2024-09-02T00:00:00Z",
+              "value": 163.45
+            }
+          ],
+          "statistics": {
+            "mean": 148.67,
+            "min": 102.34,
+            "max": 201.56,
+            "latest": 142.89,
+            "change": -22.89,
+            "changePercent": -13.8
+          }
+        },
+        "120": {
+          "days": 120,
+          "label": "120 Days",
+          "data": [],
+          "statistics": {
+            "mean": 133.79,
+            "min": 78.77,
+            "max": 181.23,
+            "latest": 133.06,
+            "change": -39.01,
+            "changePercent": -22.7
+          }
+        },
+        "365": {
+          "days": 365,
+          "label": "Full Year",
+          "data": [],
+          "statistics": {
+            "mean": 125.45,
+            "min": 45.23,
+            "max": 198.67,
+            "latest": 88.92,
+            "change": -109.75,
+            "changePercent": -55.2
+          }
+        }
+      },
+      "config": {
+        "showArea": true,
+        "showLine": true,
+        "showDots": true,
+        "showGrid": true,
+        "curve": "monotoneX",
+        "animate": true,
+        "animationDuration": 750
+      }
+    }
+  },
+  "exampleAPIEndpoints": {
+    "getAllChartData": "/api/charts",
+    "getChartById": "/api/charts/{chartId}",
+    "getTimePeriodData": "/api/charts/{chartId}/periods/{days}",
+    "getStatistics": "/api/charts/{chartId}/statistics/{days}"
+  },
+  "dataPointStructure": {
+    "description": "Each data point in the array should follow this structure",
+    "example": {
+      "date": "ISO 8601 timestamp or JavaScript Date-compatible string",
+      "value": "Numeric value (integer or float)"
+    },
+    "notes": [
+      "Date can be in ISO 8601 format: '2024-10-31T12:00:00Z'",
+      "Date can also be Unix timestamp (milliseconds): 1698753600000",
+      "Date will be converted to JavaScript Date object by D3",
+      "Value should be a number (not a string)",
+      "Data should be sorted by date in ascending order"
+    ]
+  },
+  "alternativeDataFormats": {
+    "simple": [
+      ["2024-10-01", 93.59],
+      ["2024-10-02", 98.23],
+      ["2024-10-03", 102.45]
+    ],
+    "withLabels": [
+      { "x": "2024-10-01", "y": 93.59 },
+      { "x": "2024-10-02", "y": 98.23 },
+      { "x": "2024-10-03", "y": 102.45 }
+    ],
+    "unixTimestamp": [
+      { "date": 1696118400000, "value": 93.59 },
+      { "date": 1696204800000, "value": 98.23 },
+      { "date": 1696291200000, "value": 102.45 }
+    ]
+  },
+  "chartConfiguration": {
+    "description": "Configuration options that could be stored in JSON",
+    "margin": {
+      "top": 60,
+      "right": 30,
+      "bottom": 60,
+      "left": 70
+    },
+    "responsive": {
+      "enabled": true,
+      "minWidth": 300,
+      "maxHeight": 500,
+      "breakpoints": {
+        "mobile": 640,
+        "tablet": 768,
+        "desktop": 1024
+      }
+    },
+    "colors": {
+      "primary": {
+        "line": "steelblue",
+        "area": "steelblue",
+        "areaOpacity": 0.2,
+        "dots": "steelblue"
+      },
+      "secondary": {
+        "line": "orange",
+        "area": "orange",
+        "areaOpacity": 0.2,
+        "dots": "orange"
+      }
+    },
+    "axes": {
+      "x": {
+        "label": "Date",
+        "format": "%b %d",
+        "mobileFormat": "%m/%d",
+        "ticks": 6,
+        "mobileTicks": 3
+      },
+      "y": {
+        "label": "Value",
+        "format": ".0f",
+        "ticks": 5,
+        "mobileTicks": 4
+      }
+    },
+    "tooltip": {
+      "enabled": true,
+      "dateFormat": "%B %d, %Y",
+      "valueDecimals": 2
+    },
+    "animation": {
+      "duration": 750,
+      "curve": "monotoneX"
+    }
+  },
+  "realWorldExample": {
+    "description": "Example of how this might come from a real API",
+    "endpoint": "https://api.example.com/metrics/revenue",
+    "response": {
+      "success": true,
+      "data": {
+        "metric": "revenue",
+        "currency": "USD",
+        "period": 30,
+        "startDate": "2024-10-01",
+        "endDate": "2024-10-31",
+        "dataPoints": [
+          { "date": "2024-10-01", "value": 12450.50 },
+          { "date": "2024-10-02", "value": 13200.75 },
+          { "date": "2024-10-03", "value": 11980.25 },
+          { "date": "2024-10-04", "value": 14560.00 },
+          { "date": "2024-10-05", "value": 15340.50 }
+        ],
+        "summary": {
+          "total": 388450.75,
+          "average": 12948.36,
+          "min": 11980.25,
+          "max": 15340.50,
+          "trend": "increasing"
+        }
+      }
+    }
+  }
+}
+
