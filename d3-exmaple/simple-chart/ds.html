@@ -40,40 +40,57 @@
         }
         
         .chart-title {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: bold;
             text-anchor: middle;
         }
+        
+        .axis-label {
+            font-size: 11px;
+        }
 
-        /* Ensure chart containers have proper sizing */
+        /* Ensure chart containers have proper sizing - compact */
         #chart, #chart2 {
-            min-height: 300px;
+            min-height: 200px;
             width: 100%;
         }
 
         #chart svg, #chart2 svg {
             display: block;
         }
+        
+        /* Compact body spacing */
+        body {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Extra compact collapse headers */
+        .collapse-title {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            line-height: 1.2;
+        }
     </style>
 </head>
 <body class="bg-base-200 min-h-screen p-4 pb-12">
     <div class="container mx-auto max-w-5xl">
         <!-- Hero Section with Theme Toggle -->
-        <div class="flex flex-col sm:flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
+        <div class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-3">
             <div class="text-center sm:text-left flex-1">
-                <h1 class="text-3xl sm:text-4xl font-bold text-primary mb-2">Time Series Visualization</h1>
-                <p class="text-sm sm:text-base text-base-content/70">Interactive D3.js chart with dynamic time period selection</p>
+                <h1 class="text-2xl sm:text-3xl font-bold text-primary mb-1">Time Series Visualization</h1>
+                <p class="text-xs sm:text-sm text-base-content/70">Interactive D3.js charts</p>
             </div>
             <div class="flex gap-2 items-center">
                 <!-- Responsive Badge -->
-                <div class="badge badge-outline hidden sm:flex">
+                <div class="badge badge-outline badge-sm hidden sm:flex">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     <span id="viewport-size" class="text-xs"></span>
                 </div>
-                <button class="btn btn-circle btn-ghost btn-sm sm:btn-md" onclick="toggleTheme()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button class="btn btn-circle btn-ghost btn-xs sm:btn-sm" onclick="toggleTheme()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
                 </button>
@@ -81,56 +98,31 @@
         </div>
 
         <!-- Unified Time Period Control -->
-        <div class="card bg-gradient-to-r from-primary/10 to-secondary/10 shadow-xl mb-6">
-            <div class="card-body p-4 sm:p-6">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-primary/20 p-3 rounded-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h2 class="text-lg font-bold">Time Period</h2>
-                            <p class="text-xs text-base-content/70">Select range for all charts</p>
-                        </div>
+        <div class="card bg-gradient-to-r from-primary/10 to-secondary/10 shadow-md mb-3">
+            <div class="card-body p-3">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span class="text-sm font-semibold">Time Period</span>
                     </div>
                     
                     <!-- Desktop: Button Group -->
-                    <div class="hidden md:flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-primary global-time-btn" data-days="30">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            30 Days
-                        </button>
-                        <button class="btn btn-sm btn-outline btn-primary global-time-btn" data-days="60">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            60 Days
-                        </button>
-                        <button class="btn btn-sm btn-outline btn-primary global-time-btn" data-days="120">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            120 Days
-                        </button>
-                        <button class="btn btn-sm btn-outline btn-primary global-time-btn" data-days="365">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            1 Year
-                        </button>
+                    <div class="hidden md:flex flex-wrap gap-1">
+                        <button class="btn btn-xs btn-primary global-time-btn" data-days="30">30D</button>
+                        <button class="btn btn-xs btn-outline btn-primary global-time-btn" data-days="60">60D</button>
+                        <button class="btn btn-xs btn-outline btn-primary global-time-btn" data-days="120">120D</button>
+                        <button class="btn btn-xs btn-outline btn-primary global-time-btn" data-days="365">1Y</button>
                     </div>
                     
                     <!-- Mobile/Tablet: Radio Buttons -->
-                    <div class="flex md:hidden flex-col gap-2 w-full">
+                    <div class="flex md:hidden flex-col gap-1 w-full">
                         <div class="join join-vertical w-full">
-                            <input class="join-item btn btn-sm" type="radio" name="global-time-period" value="30" aria-label="30 Days" checked />
-                            <input class="join-item btn btn-sm" type="radio" name="global-time-period" value="60" aria-label="60 Days" />
-                            <input class="join-item btn btn-sm" type="radio" name="global-time-period" value="120" aria-label="120 Days" />
-                            <input class="join-item btn btn-sm" type="radio" name="global-time-period" value="365" aria-label="1 Year" />
+                            <input class="join-item btn btn-xs" type="radio" name="global-time-period" value="30" aria-label="30 Days" checked />
+                            <input class="join-item btn btn-xs" type="radio" name="global-time-period" value="60" aria-label="60 Days" />
+                            <input class="join-item btn btn-xs" type="radio" name="global-time-period" value="120" aria-label="120 Days" />
+                            <input class="join-item btn btn-xs" type="radio" name="global-time-period" value="365" aria-label="1 Year" />
                         </div>
                     </div>
                 </div>
@@ -138,32 +130,32 @@
         </div>
 
         <!-- Collapsible Chart Component 1 -->
-        <div class="collapse collapse-arrow bg-base-100 shadow-xl mb-6">
+        <div class="collapse collapse-arrow bg-base-100 shadow-md mb-3">
             <input type="checkbox" checked="checked" /> 
-            <div class="collapse-title text-xl font-medium bg-primary text-primary-content">
+            <div class="collapse-title text-sm font-medium bg-primary text-primary-content">
                 <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                     </svg>
-                    Primary Time Series Chart
+                    Primary Time Series
                 </div>
             </div>
-            <div class="collapse-content bg-base-100 pt-4">
+            <div class="collapse-content bg-base-100 pt-2 px-2 pb-2">
                 <!-- Chart Container -->
-                <div class="card bg-base-100 shadow-md mb-6">
-                    <div class="card-body p-2 sm:p-4">
+                <div class="card bg-base-100 shadow-sm mb-2">
+                    <div class="card-body p-2">
                         <div id="chart" class="w-full overflow-x-auto"></div>
                     </div>
                 </div>
 
                 <!-- Statistics Card -->
-                <div class="alert shadow-lg">
+                <div class="alert alert-sm py-2 px-3">
                     <div class="w-full">
-                        <div class="flex items-start gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-5 h-5 sm:w-6 sm:h-6 mt-1">
+                        <div class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <div id="stats" class="text-xs sm:text-sm flex-1 break-words">Loading statistics...</div>
+                            <div id="stats" class="text-xs flex-1 break-words">Loading statistics...</div>
                         </div>
                     </div>
                 </div>
@@ -171,82 +163,60 @@
         </div>
 
         <!-- Collapsible Chart Component 2 -->
-        <div class="collapse collapse-arrow bg-base-100 shadow-xl">
+        <div class="collapse collapse-arrow bg-base-100 shadow-md mb-3">
             <input type="checkbox" checked="checked" /> 
-            <div class="collapse-title text-xl font-medium bg-secondary text-secondary-content">
+            <div class="collapse-title text-sm font-medium bg-secondary text-secondary-content">
                 <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    Secondary Metrics Chart
+                    Secondary Metrics
                 </div>
             </div>
-            <div class="collapse-content bg-base-100 pt-4">
+            <div class="collapse-content bg-base-100 pt-2 px-2 pb-2">
                 <!-- Chart Container -->
-                <div class="card bg-base-100 shadow-md mb-6">
-                    <div class="card-body p-2 sm:p-4">
+                <div class="card bg-base-100 shadow-sm mb-2">
+                    <div class="card-body p-2">
                         <div id="chart2" class="w-full overflow-x-auto"></div>
                     </div>
                 </div>
 
                 <!-- Statistics Card -->
-                <div class="alert alert-secondary shadow-lg">
+                <div class="alert alert-secondary alert-sm py-2 px-3">
                     <div class="w-full">
-                        <div class="flex items-start gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-5 h-5 sm:w-6 sm:h-6 mt-1">
+                        <div class="flex items-start gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <div id="stats2" class="text-xs sm:text-sm flex-1 break-words">Loading statistics...</div>
+                            <div id="stats2" class="text-xs flex-1 break-words">Loading statistics...</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Info Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mt-6 sm:mt-8">
-            <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow">
-                <div class="card-body p-4">
-                    <h3 class="card-title text-sm flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                        </svg>
-                        Interactive
-                    </h3>
-                    <p class="text-xs text-base-content/70">Hover over data points to see detailed information</p>
-                </div>
+        <!-- Info Cards - Compact -->
+        <div class="flex flex-wrap gap-2 mt-4 text-xs text-base-content/60">
+            <div class="badge badge-outline gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                </svg>
+                Interactive
             </div>
-            <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow">
-                <div class="card-body p-4">
-                    <h3 class="card-title text-sm flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                        Responsive
-                    </h3>
-                    <p class="text-xs text-base-content/70">Adapts to any screen size with smooth transitions</p>
-                </div>
+            <div class="badge badge-outline gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Responsive
             </div>
-            <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow sm:col-span-2 lg:col-span-1">
-                <div class="card-body p-4">
-                    <h3 class="card-title text-sm flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        Real-time Ready
-                    </h3>
-                    <p class="text-xs text-base-content/70">Built with D3.js for live data updates</p>
-                </div>
+            <div class="badge badge-outline gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Real-time Ready
             </div>
+            <div class="badge badge-outline">D3.js + Tailwind + DaisyUI</div>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer footer-center mt-12 p-4 text-base-content/60 text-xs">
-            <div>
-                <p>Built with D3.js, Tailwind CSS, and DaisyUI</p>
-                <p>Responsive time series visualization • Resize your browser to see it adapt</p>
-            </div>
-        </footer>
     </div>
 
     <script>

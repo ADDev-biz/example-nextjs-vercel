@@ -32,30 +32,32 @@ const dataStore = {
     365: generateData(365)
 };
 
-// Set up dimensions - will be updated on resize
-const margin = { top: 60, right: 30, bottom: 60, left: 70 };
+// Set up dimensions - compact for dashboard
+const margin = { top: 40, right: 20, bottom: 40, left: 50 };
 
-// Function to get responsive dimensions
+// Function to get responsive dimensions - compact for dashboard
 function getChartDimensions() {
     const container = document.getElementById('chart');
     const containerWidth = container.offsetWidth;
-    // Calculate responsive dimensions
-    const chartWidth = Math.max(300, containerWidth - margin.left - margin.right);
-    const chartHeight = Math.max(250, Math.min(500, containerWidth * 0.5));
+    // Calculate responsive dimensions - smaller and more compact
+    const chartWidth = Math.max(250, containerWidth - margin.left - margin.right);
+    const chartHeight = Math.max(180, Math.min(300, containerWidth * 0.35)); // Reduced from 0.5 to 0.35
     
     // Adjust margins for mobile
     if (containerWidth < 640) {
+        margin.left = 40;
+        margin.right = 15;
+        margin.bottom = 35;
+        margin.top = 30;
+    } else {
         margin.left = 50;
         margin.right = 20;
-        margin.bottom = 50;
-    } else {
-        margin.left = 70;
-        margin.right = 30;
-        margin.bottom = 60;
+        margin.bottom = 40;
+        margin.top = 40;
     }
     
     return { 
-        width: Math.max(300, containerWidth - margin.left - margin.right), 
+        width: Math.max(250, containerWidth - margin.left - margin.right), 
         height: chartHeight 
     };
 }
@@ -121,11 +123,11 @@ const yAxisLabel = yAxis.append("text")
     .style("fill", "black")
     .text("Value");
 
-// Add title
+// Add title - compact
 const title = svg.append("text")
     .attr("class", "chart-title")
     .attr("text-anchor", "middle")
-    .attr("y", 30)
+    .attr("y", 20)
     .text("Time Series Data - 30 Days");
 
 // Add area path
@@ -447,28 +449,30 @@ const dataStore2 = {
     365: generateData2(365)
 };
 
-// Set up dimensions for chart 2
-const margin2 = { top: 60, right: 30, bottom: 60, left: 70 };
+// Set up dimensions for chart 2 - compact for dashboard
+const margin2 = { top: 40, right: 20, bottom: 40, left: 50 };
 
-// Function to get responsive dimensions for chart 2
+// Function to get responsive dimensions for chart 2 - compact
 function getChartDimensions2() {
     const container = document.getElementById('chart2');
     const containerWidth = container.offsetWidth;
-    const chartWidth = Math.max(300, containerWidth - margin2.left - margin2.right);
-    const chartHeight = Math.max(250, Math.min(500, containerWidth * 0.5));
+    const chartWidth = Math.max(250, containerWidth - margin2.left - margin2.right);
+    const chartHeight = Math.max(180, Math.min(300, containerWidth * 0.35)); // Reduced from 0.5 to 0.35
     
     if (containerWidth < 640) {
+        margin2.left = 40;
+        margin2.right = 15;
+        margin2.bottom = 35;
+        margin2.top = 30;
+    } else {
         margin2.left = 50;
         margin2.right = 20;
-        margin2.bottom = 50;
-    } else {
-        margin2.left = 70;
-        margin2.right = 30;
-        margin2.bottom = 60;
+        margin2.bottom = 40;
+        margin2.top = 40;
     }
     
     return { 
-        width: Math.max(300, containerWidth - margin2.left - margin2.right), 
+        width: Math.max(250, containerWidth - margin2.left - margin2.right), 
         height: chartHeight 
     };
 }
@@ -534,11 +538,11 @@ const yAxisLabel2 = yAxis2.append("text")
     .style("fill", "black")
     .text("Value");
 
-// Add title for chart 2
+// Add title for chart 2 - compact
 const title2 = svg2.append("text")
     .attr("class", "chart-title")
     .attr("text-anchor", "middle")
-    .attr("y", 30)
+    .attr("y", 20)
     .text("Secondary Metrics - 30 Days");
 
 // Add area path for chart 2 (orange color)
